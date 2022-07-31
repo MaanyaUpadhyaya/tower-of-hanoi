@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+void merge(int b[],int c[],int a[],int p,int q)
+{
+    int i,j,k,m;
+    i=0;
+    j=0;
+    k=0;
+    while(i<p && j<q)
+    {
+        if(b[i] <=c[j])
+        {
+            a[k]=b[i];
+            i++;
+        }
+        else
+        {
+            a[k]=c[j];
+            j++;
+        }
+        k++;
+    }
+    if(i==p)
+    {
+        for(m=j;m<=q-1;m++)
+        {
+            a[k]=c[m];
+            k++;
+        }
+    }
+    else
+    {
+        for(m=i;m<=p-1;m++)
+        {
+            a[k]=b[m];
+            k++;
+        }
+    }
+}
+void mergeSort(int a[],int n)
+{
+    int b[100],c[100];
+    int i;
+    int p=0,q=0;
+    if(n>1)
+    {
+        for(i=0;i<=floor(n/2)-1;i++)
+        {
+            b[p]=a[i];
+            p++;
+        }
+        for(i=floor(n/2);i<=n-1;i++)
+        {
+            c[q] = a[i];
+            q++;
+        }
+        mergeSort(b,p);
+        mergeSort(c,q);
+        merge(b,c,a,p,q);
+    }
+}
+int main()
+{
+    int a[100],n,i;
+    clock_t start,end;
+    double t;
+    printf("Enter the size of the array: ");
+    scanf("%d",&n);
+    printf("Enter the array elements: \n");
+    for(i=0;i<n;i++)
+        scanf("%d",&a[i]);
+    start=clock();
+    mergeSort(a,n);
+    end=clock();
+    printf("The sorted array is:\n");
+    for(i=0;i<n;i++)
+        printf("%d\t",a[i]);
+    t=(double)(end-start)/CLOCKS_PER_SEC;
+    printf("The time taken= %f seconds",t);
+    return 0;
+}
